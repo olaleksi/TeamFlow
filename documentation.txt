@@ -1,0 +1,15 @@
+packages intalled
+express 
+prisma 
+@prisma/client 
+bcrypt 
+jsonwebtoken 
+nodemailer 
+dotenv 
+cors 
+uuid
+
+
+
+// this automatically formats your prisma code
+npx prisma format

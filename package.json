@@ -1,0 +1,26 @@
+{
+  "name": "teamflow",
+  "version": "1.0.0",
+  "description": "TeamFlow is a backend-only RESTful API designed for team task management. It supports authentication, project creation, task assignment, role-based access control, and activity logging. The system allows teams to manage projects and track task progress efficiently.",
+  "license": "ISC",
+  "author": "Olalekan Olajide, Ezekiel Donkor, Essien Wisdom Udeme, Ogunkanmi Favour Funmilayo, Goodness ChukwuemekaGoodness Chukwuemeka",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^8.0.1",
+    "nodemon": "^3.1.14",
+    "prisma": "^6.19.2",
+    "uuid": "^13.0.0"
+  }
+}
