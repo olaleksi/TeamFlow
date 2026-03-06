@@ -1,3 +1,6 @@
+after cloning run npm install in terminal 
+
+
 packages intalled
 express 
 prisma 
@@ -13,3 +16,7 @@ uuid
 
 // this automatically formats your prisma code
 npx prisma format
+
+
+//display database on local host
+npx prisma studio
