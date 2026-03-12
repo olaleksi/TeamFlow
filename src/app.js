@@ -2,6 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { testConnection } from "./config/database.js";
+import activityLogRoutes from "./routes/activityLogRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+
+
 // import authRoutes from './routes/authRoutes.js';
 // import projectRoutes from './routes/projectRoutes.js';
 // import taskRoutes from './routes/taskRoutes.js';
@@ -19,6 +23,10 @@ app.use(cors());
 app.use(express.json());
 // Parse URL-encoded data (for form submissions)
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/activity-logs", activityLogRoutes);
+app.use("/tasks", taskRoutes);
+
 
 
 // Route handlers
