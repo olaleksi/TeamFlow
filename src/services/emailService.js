@@ -1,17 +1,10 @@
 import dotenv from 'dotenv';
-import nodemailer from 'nodemailer'
+import { transporter } from '../config/email';
 
 // Load environment variables from .env file
 dotenv.config({ path: "../../.env" });
 
 
-const transporter = nodemailer.createTransport({
-  service:"gmail",
-  auth:{
-    user: process.env.Email_User,
-    pass:process.env.Email_Password,
-  }
-});
 
 export const sendVerificationEmail = (email, token) => {
 
