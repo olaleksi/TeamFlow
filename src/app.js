@@ -7,7 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import activityLogRoutes from "./routes/activityLogRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
-// import projectRoutes from './routes/projectRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
 // import userRoutes from './routes/userRoutes.js';
 
 // Load environment variables from .env file
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Route handlers
 app.use('/api/auth', authRoutes);
-// app.use('/api/projects', projectRoutes);
+app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use("/api/activity-logs", activityLogRoutes);
 // app.use('/api/users', userRoutes);
