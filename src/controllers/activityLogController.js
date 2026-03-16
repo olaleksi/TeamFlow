@@ -2,34 +2,43 @@ import {
   getProjectActivityLogs,
   getTaskActivityLogs
 } from "../services/activityLoggerServices.js";
+import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/AppError.js";
 
-export const getProjectLogs = async (req, res) => {
+export const getProjectLogs = catchAsync(async (req, res, next) => {
+  const { projectId } = req.params;
+  const { limit = 50, skip = 0 } = req.query; // Support for pagination
 
-  try {
-
-    const { projectId } = req.params;
-
-    const logs = await getProjectActivityLogs(projectId);
-
-    res.status(200).json(logs);
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  // check if project id exist
+  if (!projectId) {
+    return next(new AppError("Project ID is required", 400));
   }
-};
+
+  const logs = await getProjectActivityLogs(projectId, Number(limit), Number(skip));
+
+  if (!logs || !logs.success) {
+    return next(new AppError("Could not retrieve logs", 500));
+  }
+
+  // 4. Send Success Response
+  res.status(200).json(logs);
+});
 
 
-export const getTaskLogs = async (req, res) => {
 
-  try {
+export const getTaskLogs = catchAsync(async (req, res, next) => {
 
+    
     const { taskId } = req.params;
+
+    if (!taskId) {
+      return next(new AppError("Task id is required",400))
+    }
 
     const logs = await getTaskActivityLogs(taskId);
 
-    res.status(200).json(logs);
 
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+  res.status(200).json(logs);
+
+ 
+});
