@@ -1,5 +1,5 @@
 import express from "express";
-
+import { protect } from "../middleware/auth.js";
 // Import controller functions
 import {
   createTask,
@@ -8,6 +8,9 @@ import {
 } from "../controllers/taskController.js";
 
 const router = express.Router();
+
+// protect all task routes
+router.use(protect);
 
 /*
 CREATE TASK

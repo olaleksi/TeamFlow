@@ -5,6 +5,7 @@ import {
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/AppError.js";
 
+// GET	/logs/user/:userId
 export const getProjectLogs = catchAsync(async (req, res, next) => {
   const { projectId } = req.params;
   const { limit = 50, skip = 0 } = req.query; // Support for pagination
@@ -25,7 +26,7 @@ export const getProjectLogs = catchAsync(async (req, res, next) => {
 });
 
 
-
+// GET	/logs/task/:taskId
 export const getTaskLogs = catchAsync(async (req, res, next) => {
 
     
