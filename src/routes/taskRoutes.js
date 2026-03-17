@@ -28,6 +28,6 @@ router.patch("/assign", assignTask);
 UPDATE TASK STATUS
 PATCH /tasks/:id/status
 */
-router.patch("/:id/updateTask", updateTaskStatus);
+router.patch("/:taskId/updateTask", updateTaskStatus);
 
 export default router;

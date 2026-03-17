@@ -11,6 +11,12 @@ import {
 } from "../controllers/projectController.js";
 import { protect } from "../middleware/auth.js";
 
+import {
+  createTask,
+  assignTask,
+  updateTaskStatus,
+} from "../controllers/taskController.js";
+
 const router = express.Router();
 
 router.use(protect);
@@ -31,5 +37,11 @@ router.post("/:projectId/members", addProjectMember);
 router.patch("/:projectId/members/:memberId", updateProjectMemberRole);
 
 router.delete("/:projectId/members/:memberId", removeProjectMember);
+
+// Project tasks
+router.post('/:projectId/tasks', createTask);
+router.post('/:projectId/tasks', assignTask);
+router.post('/:projectId/tasks', updateTaskStatus);
+
 
 export default router;

@@ -8,7 +8,7 @@ import activityLogRoutes from "./routes/activityLogRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 
 import projectRoutes from './routes/projectRoutes.js';
-// import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -33,7 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use("/api/activity-logs", activityLogRoutes);
-// app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 // Root route to check if the API is running
 app.get('/', (req, res) => { 

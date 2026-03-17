@@ -4,6 +4,9 @@ import {sendTaskAssignmentEmail} from "../services/emailService.js"
 import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
 
+const baseUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+const taskUrl = `${baseUrl}/projects/tasks/`;
+
 // @desc    Create a new task
 // @route   POST /api/projects/:projectId/tasks
 
@@ -13,7 +16,12 @@ export const createTask = catchAsync(async (req, res, next) => {
   const  userId = req.user.id;
 
   if (!title || !description || !projectId || !userId) {
-    return next(new AppError("Field required", 400));
+    return next(
+      new AppError(
+        "All fields (title, description, projectId, userId) are mandatory.",
+        400,
+      ),
+    );
   }
   // const currentUser = req.user; // authenticated user
 
@@ -56,7 +64,7 @@ export const createTask = catchAsync(async (req, res, next) => {
       createdBy: {
         connect: { id: userId },
       },
-      assigneeId: assigneeId || null,
+      assignee: assigneeId ? {connect: {id: assigneeId}} : null,
       status: "TODO",
     },
     include: {
@@ -105,6 +113,7 @@ export const createTask = catchAsync(async (req, res, next) => {
         assignedByName,
         title,
         project.name,
+        taskUrl
       );
     }
   }
@@ -136,9 +145,10 @@ export const assignTask = catchAsync(async (req, res, next) => {
       where: { id: taskId },
       data: {
         assignee: {
-          connect: { id: userId }
-        }
-      }
+          connect: { id: userId },
+        },
+      },
+      include: { project: true }, // Fetches project name for the email
     });
 
     await createActivityLog({
@@ -150,7 +160,25 @@ export const assignTask = catchAsync(async (req, res, next) => {
         assignee: userId // who recieves the task
       }
     });
+  
+  // Send email notification if assigned to someone
+  const assignee = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true, firstName: true },
+  });
 
+  // if data is found
+  if (assignee) {
+   
+    const assignedByName = `${req.user.firstName} ${req.user.lastName}`;
+    await sendTaskAssignmentEmail(
+      assignee.email,
+      assignedByName,
+      updatedTask.title,
+      updatedTask.project.name,
+      taskUrl,
+    );
+  }
   res.status(200).json({
     status: "success",
     data: {
