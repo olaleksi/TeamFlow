@@ -29,7 +29,6 @@ export const getProjectLogs = catchAsync(async (req, res, next) => {
 // GET	/logs/task/:taskId
 export const getTaskLogs = catchAsync(async (req, res, next) => {
 
-    
     const { taskId } = req.params;
 
     if (!taskId) {

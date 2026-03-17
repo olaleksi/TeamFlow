@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Route handlers
+// defining base paths
 app.use('/api/auth', authRoutes);
 // app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);

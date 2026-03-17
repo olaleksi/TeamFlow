@@ -16,7 +16,7 @@ router.use(protect);
 CREATE TASK
 POST /tasks
 */
-router.post("/", createTask);
+router.post("/:projectId/tasks", createTask);
 
 /*
 ASSIGN TASK
@@ -28,6 +28,6 @@ router.patch("/assign", assignTask);
 UPDATE TASK STATUS
 PATCH /tasks/:id/status
 */
-router.patch("/:id/status", updateTaskStatus);
+router.patch("/:id/updateTask", updateTaskStatus);
 
 export default router;

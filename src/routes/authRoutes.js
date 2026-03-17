@@ -14,7 +14,7 @@ router.post("/register", register);
 router.get("/verify-email", verifyEmail);
 router.post("/login", login);
 
-// Protected routes
+// Protected routes only for logged in users 
 router.get("/me", protect, getMe);
 
 export default router;
