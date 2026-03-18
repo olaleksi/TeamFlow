@@ -15,6 +15,7 @@ import {
   createTask,
   assignTask,
   updateTaskStatus,
+  getProjectTasks
 } from "../controllers/taskController.js";
 
 const router = express.Router();
@@ -39,9 +40,9 @@ router.patch("/:projectId/members/:memberId", updateProjectMemberRole);
 router.delete("/:projectId/members/:memberId", removeProjectMember);
 
 // Project tasks
+// Nested task routes within projects
 router.post('/:projectId/tasks', createTask);
-router.post('/:projectId/tasks', assignTask);
-router.post('/:projectId/tasks', updateTaskStatus);
+router.get("/:projectId/tasks", getProjectTasks);
 
 
 export default router;

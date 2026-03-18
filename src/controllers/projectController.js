@@ -298,7 +298,7 @@ export const addProjectMember = catchAsync(async (req, res, next) => {
         data: {
             projectId,
             userId,
-            role: role || "MEMBER",
+            role: role.toUpperCase() || "MEMBER",
         },
         include: {
             user: {
@@ -372,25 +372,25 @@ export const updateProjectMemberRole = catchAsync(async (req, res, next) => {
     }
 
     const updatedMembership = await prisma.projectMember.update({
-        where: {
-            projectId_userId: {
-                projectId,
-                userId: memberId,
-            },
+      where: {
+        projectId_userId: {
+          projectId,
+          userId: memberId,
         },
-        data: {
-            role,
+      },
+      data: {
+        role: role.toUpperCase(),
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
         },
-        include: {
-            user: {
-                select: {
-                    id: true,
-                    firstName: true,
-                    lastName: true,
-                    email: true,
-                },
-            },
-        },
+      },
     });
 
   res.status(200).json({

@@ -4,7 +4,10 @@ import { protect } from "../middleware/auth.js";
 import {
   createTask,
   assignTask,
-  updateTaskStatus
+  updateTaskStatus,
+  getMyAssignedTasks,
+  getProjectTasks,
+  deleteTask
 } from "../controllers/taskController.js";
 
 const router = express.Router();
@@ -12,22 +15,34 @@ const router = express.Router();
 // protect all task routes
 router.use(protect);
 
+
+
 /*
 CREATE TASK
 POST /tasks
 */
-router.post("/:projectId/tasks", createTask);
+// router.post("/:projectId/tasks", createTask);
+
+
+// Get current user's tasks
+router.get("/assigned/me", getMyAssignedTasks);
 
 /*
 ASSIGN TASK
 PATCH /tasks/assign
 */
-router.patch("/assign", assignTask);
+router.patch("/:taskId/assign", assignTask);
 
 /*
 UPDATE TASK STATUS
-PATCH /tasks/:id/status
+PATCH /:tasks/status
 */
-router.patch("/:taskId/updateTask", updateTaskStatus);
+router.patch("/:taskId/status", updateTaskStatus);
+
+
+// Delete the task
+router.delete("/:taskId",deleteTask);
+
+
 
 export default router;

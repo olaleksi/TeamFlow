@@ -1,0 +1,514 @@
+{
+    "info": {
+      "name": "TeamFlow API",
+      "description": "Complete Task Management Backend API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Authentication",
+        "item": [
+          {
+            "name": "Register User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/auth/register",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "register"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Verify Email",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{baseUrl}}/auth/verify-email?token=TOKEN_FROM_EMAIL",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "verify-email"],
+                "query": [
+                  {
+                    "key": "token",
+                    "value": "TOKEN_FROM_EMAIL"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/auth/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "login"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Get Current User",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/auth/me",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "me"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Projects",
+        "item": [
+          {
+            "name": "Create Project",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"E-commerce Platform\",\n    \"description\": \"Build a full-stack e-commerce website\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Get My Projects",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects?page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects"],
+                "query": [
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get Project By ID",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}"]
+              }
+            }
+          },
+          {
+            "name": "Update Project",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Updated E-commerce Platform\",\n    \"description\": \"Updated description for the project\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Delete Project",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Project Members",
+        "item": [
+          {
+            "name": "Add Member",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/members",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "members"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"jane@example.com\",\n    \"role\": \"ADMIN\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Update Member Role",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/members/{{memberId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "members", "{{memberId}}"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"role\": \"MEMBER\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Remove Member",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/members/{{memberId}}",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "members", "{{memberId}}"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Tasks",
+        "item": [
+          {
+            "name": "Create Task",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/tasks",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "tasks"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"title\": \"Implement login feature\",\n    \"description\": \"Create login endpoint with JWT authentication\",\n    \"priority\": \"HIGH\",\n    \"dueDate\": \"2024-12-31\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Assign Task",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/tasks/assign",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "tasks", "assign"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"taskId\": \"{{taskId}}\",\n    \"assigneeId\": \"{{assigneeId}}\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Update Task Status",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/tasks/status",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "tasks", "status"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"taskId\": \"{{taskId}}\",\n    \"status\": \"IN_PROGRESS\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Get Project Tasks",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/projects/{{projectId}}/tasks?status=TODO&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["projects", "{{projectId}}", "tasks"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "TODO"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Get My Assigned Tasks",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/tasks/assigned/me?status=IN_PROGRESS",
+                "host": ["{{baseUrl}}"],
+                "path": ["tasks", "assigned", "me"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "IN_PROGRESS"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Get User Profile",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "profile"]
+              }
+            }
+          },
+          {
+            "name": "Update User Profile",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "profile"]
+              },
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Smith\"\n}"
+              }
+            }
+          },
+          {
+            "name": "Search Users",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer {{token}}"
+                }
+              ],
+              "url": {
+                "raw": "{{baseUrl}}/users/search?email=jane",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "search"],
+                "query": [
+                  {
+                    "key": "email",
+                    "value": "jane"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:3000/api",
+        "type": "string"
+      },
+      {
+        "key": "token",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "key": "projectId",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "key": "memberId",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "key": "taskId",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "key": "assigneeId",
+        "value": "",
+        "type": "string"
+      }
+    ]
+  }
