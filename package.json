@@ -12,7 +12,7 @@
     "dev": "nodemon src/server.js",
     "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
-  "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2",
@@ -23,7 +23,10 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.1",
     "nodemon": "^3.1.14",
+    "pg": "^8.20.0",
     "prisma": "^6.19.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^13.0.0"
   }
 }
