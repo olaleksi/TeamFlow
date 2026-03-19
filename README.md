@@ -184,12 +184,13 @@ teamflow-backend/
 │   │   ├── taskController.js
 │   │   └── userController.js
 │   ├── docs/                 # Swagger documentation files
-│   │   ├── auth.docs.js
-│   │   ├── projects.docs.js
-│   │   └── tasks.docs.js
+│   │   ├── authdocs.js
+│   │   ├── projectsdocs.js
+│   │   └── tasksdocs.js
+│   │   └── userdocs.js 
 │   ├── middleware/
 │   │   ├── auth.js          # JWT verification
-│   │   └── validation.js    # Request validation
+│   │   └── errorHandling.js    # Error handling 
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── projectRoutes.js
@@ -197,7 +198,7 @@ teamflow-backend/
 │   │   └── userRoutes.js
 │   ├── services/
 │   │   ├── emailService.js  # Email functionality
-│   │   └── activityService.js # Activity logging
+│   │   └── activityLoggerServices.js # Activity logging
 │   ├── utils/
 │   │   ├── AppError.js      # Custom error class
 │   │   └── catchAsync.js    # Async error handler
@@ -207,7 +208,8 @@ teamflow-backend/
 ├── .env
 ├── .gitignore
 ├── package.json
-└── README.md
+└── README.md 
+└── TeamFlow-PostMan-Collection.json
 ```
 
 ## 🗄️ Database Schema
