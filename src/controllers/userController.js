@@ -1,22 +1,15 @@
-import AuthService from "../services/authService";
-import { restrictAccess } from "../middleware/validation.js";
+import AuthService from "../services/authService.js";
 
 // Gets user info by User email
 export async function getUserProfile(req, res) {
     try {
-        // Denies access if not admin or user
-        if (req.user.role !== "ADMIN" && req.user.id !== user.id) {
-            return res.status(403).json({ error: "Access denied" });
-        }
-
+        // isOwnerOrAdmin middleware already verified the permission!
         const user = await AuthService.getUserByEmail(req.params.email);
+        
+        if (!user) return res.status(404).json({ error: "User not found" });
 
-        const { password, emailToken, ...sanitizedUser } = user; //Hides sensitive info
-
-        res.status(200).json({
-            success: true,
-            user: sanitizedUser
-        });
+        const { password, ...sanitized } = user;
+        res.status(200).json({ success: true, user: sanitized });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -25,98 +18,70 @@ export async function getUserProfile(req, res) {
 // Gets all user (admin only)
 export async function getAllUsers(req, res) {
     try {
+        // The 'restrictTo' middleware already verified this is an ADMIN
+        const users = await AuthService.getAllUsers();
 
-        // Restrict access to admin only (before DB call)
-        if (req.user.role !== "ADMIN") {
-            return res.status(403).json({ error: "Access denied" });
-        }
-
-        const users = await AuthService.getAllUsers(); // DB call
-
-        const sanitizedUsers = users.map(({ password, emailToken, ...user }) => user); // Hides sensitive info
+        // SANITIZE: Remove password and tokens from every user in the array
+        const sanitizedUsers = users.map(({ password, emailToken, ...user }) => user);
 
         res.status(200).json({
             success: true,
+            count: sanitizedUsers.length,
             users: sanitizedUsers
         });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ success: false, error: err.message });
     }
 }
+
 
 // Update user (admin or user themselves)
 export async function updateUser(req, res) {
     try {
-        //  Denies update access if not user or admin
-        if (req.user.role !== "ADMIN" && req.user.id !== user.id) {
-            return res.status(403).json({ error: "Operation requested denied" });
+        const { email } = req.params;
+        const updateData = { ...req.body };
+
+        // SECURITY: Prevent non-admins from changing roles
+        if (req.user.role !== "ADMIN") {
+            delete updateData.role;       // Remove 'role' if it exists in the body
+            delete updateData.isVerified; // Remove other sensitive fields
         }
 
-        const user = await AuthService.updateUser(req.params.id, req.body);
+        // Perform the update via Service
+        const updatedUser = await AuthService.updateUserByEmail(email, updateData);
 
-        const { password, emailToken, ...sanitizedUser } = user;
+        if (!updatedUser) {
+            return res.status(404).json({ success: false, message: "User not found." });
+        }
+
+        // Sanitize: Never send the password back in the response
+        const { password, emailToken, ...sanitizedUser } = updatedUser;
 
         res.status(200).json({
             success: true,
+            message: "User updated successfully",
             user: sanitizedUser
         });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ success: false, error: err.message });
     }
 }
 
 // Delete user (admin only)
+// Example: The Delete Controller
 export async function deleteUser(req, res) {
     try {
+        const { email } = req.params;
 
-        // Restricts unauthorized user
-        if (req.user.role !== "ADMIN") {
-            return res.status(403).json({ error: "Unauthorized to perform the requested operation" });
+        // Extra Business Rule: Admin cannot delete themselves to prevent lockouts
+        if (req.user.email === email && req.user.role === "ADMIN") {
+            return res.status(400).json({ message: "Admins cannot delete their own master account." });
         }
 
-        // Prevents admin from deleying themselves
-        if (req.params.id === req.params.id) {
-            return res.status(400).json({ error: "Admin can't delete themselves" });
-        }
-
-        const user = await AuthService.deleteUser(req.params.id);
-
-        res.status(200).json({
-            success: true,
-            message: "User deleted successfully"
-        });
+        await AuthService.deleteUserByEmail(email);
+        res.status(200).json({ success: true, message: `User ${email} deleted.` });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
-
-
-
-// Get user role by user ID
-export async function getUserRole(req, res) {
-    try {
-        const user = await AuthService.findById(req.params.id);
-        if(!user) {
-            return res.status(404).json({error: "User not found"});
-        }
-
-        res.json({role: user.role});
-        } catch (err) {
-            res.status(400).json({error: err.message});
-    }
-};
-
-// Get user verification status
-export async function getUserStatus(req, res) {
-    try {
-        const user = await AuthService.findById(req.params.id);
-        if(!user) {
-            return res.status(404).json({error: "User not found"});
-        }
-
-        res.json({isVerified: user.isVerified});
-        } catch (err) {
-            res.status(400).json({error: err.message});
-    }
-};
 

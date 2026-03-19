@@ -21,13 +21,3 @@ export function validatePassword(req, res, next) {
     next();
 }
 
-
-//  role based validation
-export function restrictAccess(...roles) {
-    return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({ status: "fail",  message: "Access denied!"});
-        }
-        next();
-    };
-};
