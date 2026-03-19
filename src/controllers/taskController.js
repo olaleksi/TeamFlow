@@ -13,17 +13,30 @@ const baseUrl = process.env.FRONTEND_URL || "http://localhost:3000";
 // @access  Private
 export const createTask = catchAsync(async (req, res, next) => {
   const { projectId } = req.params;
-  const { title, description, priority, dueDate, assigneeId } = req.body;
-  const  userId = req.user.id;
+  const { title, description, priority, dueDate, email } = req.body;
+  const userId = req.user.id;
+  
+  
 
-  if (!title || !description || !projectId || !userId) {
+  if (!title || !description || !projectId || !userId || !email) {
     return next(
       new AppError(
-        "All fields (title, description, projectId, userId) are mandatory.",
+        "All fields (title, description, projectId, userId, email) are mandatory.",
         400,
       ),
     );
   }
+
+  const getTaskAssigneeId = await prisma.user.findUnique({
+    where: { email: email },
+  });
+
+  if (!getTaskAssigneeId) {
+    return next(new AppError("User not found", 404));
+  }
+
+  const assigneeId = getTaskAssigneeId.id;
+
   // const currentUser = req.user; // authenticated user
 
   // Check if project exists and user has access
@@ -55,7 +68,7 @@ export const createTask = catchAsync(async (req, res, next) => {
     data: {
       title,
       description,
-      priority: priority || "MEDIUM",
+      priority: priority.toUpperCase() || "MEDIUM",
       dueDate: dueDate ? new Date(dueDate) : null,
 
       project: {
@@ -65,7 +78,7 @@ export const createTask = catchAsync(async (req, res, next) => {
       createdBy: {
         connect: { id: userId },
       },
-      assignee: assigneeId ? {connect: {id: assigneeId}} : null,
+      assignee: assigneeId ? {connect: {id: assigneeId}} : undefined,
       status: "TODO",
     },
     include: {
@@ -99,7 +112,7 @@ export const createTask = catchAsync(async (req, res, next) => {
     },
   });
 
-  const taskUrl = `${baseUrl}/projects/${updatedTask.projectId}/tasks/${updatedTask.id}`;
+  const taskUrl = `${baseUrl}/projects/${task.projectId}/tasks/${task.id}`;
 
   // Send email notification if assigned to someone
   if (assigneeId && assigneeId !== userId) {
@@ -144,12 +157,23 @@ export const assignTask = catchAsync(async (req, res, next) => {
 
 
 const { taskId} = req.params;
-  const {  userId } = req.body;
+  const {  email } = req.body;
 
   // validation
-  if (!taskId || !userId) {
-    return next(new AppError("Field is required",400))
+  if (!taskId || !email) {
+    return next(new AppError("TaskId and Email are required",400))
   }
+
+  const getAssigneeId = await prisma.user.findUnique({
+    where: { email: email }
+  });
+
+
+  if (!getAssigneeId) {
+    return next(new AppError("User not found",404))
+  }
+
+  const userId = getAssigneeId.id
 
   // update the task
     const updatedTask = await prisma.task.update({
@@ -409,39 +433,46 @@ export const deleteTask = catchAsync(async (req, res, next) => {
             members: {
               some: {
                 userId: userId,
-                role: { in: ['OWNER', 'ADMIN'] }
-              }
-            }
-          }
-        ]
-      }
+                role: { in: ["OWNER", "ADMIN"] },
+              },
+            },
+          },
+        ],
+      },
     },
     include: {
-      project: true
-    }
+      project: true,
+    },
   });
 
   if (!task) {
-    return next(new AppError('Task not found or you do not have permission to delete', 404));
+    return next(
+      new AppError(
+        "Task not found or you do not have permission to delete",
+        404,
+      ),
+    );
   }
 
   // Log activity before deletion
-  await activityService.logTaskActivity(
-    userId,
-    taskId,
-    task.projectId,
-    'TASK_DELETED',
-    { taskTitle: task.title }
-  );
+  createActivityLog({
+    action: "Task Deleted",
+    userId: userId,
+    projectId: task.projectId,
+    taskId: task.id,
+    details: {
+      taskTitle: task.title,
+    },
+  });
 
   // Delete task
   await prisma.task.delete({
-    where: { id: taskId }
+    where: { id: taskId },
   });
 
   res.status(204).json({
-    status: 'success',
-    data: null
+    status: "success",
+    data: null,
   });
 });
 

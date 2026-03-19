@@ -253,12 +253,23 @@ export const deleteProject = catchAsync(async (req, res, next) => {
 // @route   POST /api/projects/:projectId/members
 export const addProjectMember = catchAsync(async (req, res, next) => {
     const { projectId } = req.params;
-    const { userId, role } = req.body;
+    const { email, role } = req.body;
     const currentUserId = req.user?.id;
 
-    if (!projectId || !userId) {
-        return next(new AppError("Project ID and user ID are required", 400));
+    if (!projectId || !email) {
+        return next(new AppError("Project ID and email are required", 400));
     }
+
+    const targetUser = await prisma.user.findUnique({
+        where: { email: email }
+    });
+
+    if (!targetUser) {
+        return next(new AppError("User not found with that email", 400));
+    }
+
+    const userId = targetUser.id;
+    
 
     const project = await prisma.project.findFirst({
         where: {

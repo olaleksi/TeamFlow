@@ -354,10 +354,9 @@
  *                 type: string
  *                 format: date
  *                 example: 2024-12-31
- *               assigneeId:
+ *               email:
  *                 type: string
- *                 format: uuid
- *                 description: User ID to assign the task to
+ *                 description: User email to assign the task to
  *     responses:
  *       201:
  *         description: Task created successfully

@@ -183,11 +183,13 @@ teamflow-backend/
 │   │   ├── projectController.js
 │   │   ├── taskController.js
 │   │   └── userController.js
+│   │   └── activityLogController.js
 │   ├── docs/                 # Swagger documentation files
-│   │   ├── authdocs.js
-│   │   ├── projectsdocs.js
-│   │   └── tasksdocs.js
-│   │   └── userdocs.js 
+│   │   ├── authDocs.js
+│   │   ├── projectsDocs.js
+│   │   └── tasksDocs.js
+│   │   └── userDocs.js 
+│   │   └── activityLogDocs.js
 │   ├── middleware/
 │   │   ├── auth.js          # JWT verification
 │   │   └── errorHandling.js    # Error handling 
@@ -203,6 +205,7 @@ teamflow-backend/
 │   │   ├── AppError.js      # Custom error class
 │   │   └── catchAsync.js    # Async error handler
 │   └── app.js                # Main app entry
+│   └── server.js 
 ├── prisma/
 │   └── schema.prisma         # Database schema
 ├── .env

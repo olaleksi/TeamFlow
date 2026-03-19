@@ -46,7 +46,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
-app.use("/api/activity-logs", activityLogRoutes);
+app.use("/api/activities", activityLogRoutes);
 app.use('/api/users', userRoutes);
 
 // Root route to check if the API is running

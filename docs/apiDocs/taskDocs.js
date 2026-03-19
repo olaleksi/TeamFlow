@@ -126,11 +126,10 @@
  *             required:
  *               - assigneeId
  *             properties:
- *               assigneeId:
+ *               email:
  *                 type: string
- *                 format: uuid
- *                 description: ID of the user to assign the task to
- *                 example: 123e4567-e89b-12d3-a456-426614174001
+ *                 description: email of the user to assign the task
+ *                 example: email of the user to assign the task
  *     responses:
  *       200:
  *         description: Task assigned successfully

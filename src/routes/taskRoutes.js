@@ -7,7 +7,8 @@ import {
   updateTaskStatus,
   getMyAssignedTasks,
   getProjectTasks,
-  deleteTask
+  deleteTask,
+  getTask
 } from "../controllers/taskController.js";
 
 const router = express.Router();
@@ -39,6 +40,9 @@ PATCH /:tasks/status
 */
 router.patch("/:taskId/status", updateTaskStatus);
 
+
+// get task by id
+router.get("/:taskId", getTask)
 
 // Delete the task
 router.delete("/:taskId",deleteTask);
