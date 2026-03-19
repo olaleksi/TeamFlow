@@ -1,8 +1,8 @@
 import { prisma } from "../config/database.js";
 import { createActivityLog } from "../services/activityLoggerServices.js";
 import {sendTaskAssignmentEmail} from "../services/emailService.js"
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
 import dotenv from "dotenv";
 dotenv.config();``
 const baseUrl = process.env.FRONTEND_URL || "http://localhost:3000";

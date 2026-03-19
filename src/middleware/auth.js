@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { prisma } from "../config/database.js";
-import AppError from "../utils/AppError.js";
+import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 // Protect routes - verify user is authenticated

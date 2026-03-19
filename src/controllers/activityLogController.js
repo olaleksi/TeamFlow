@@ -3,7 +3,7 @@ import {
   getTaskActivityLogs
 } from "../services/activityLoggerServices.js";
 import catchAsync from "../utils/catchAsync.js";
-import AppError from "../utils/AppError.js";
+import AppError from "../utils/appError.js";
 
 // GET	/logs/user/:userId
 export const getProjectLogs = catchAsync(async (req, res, next) => {

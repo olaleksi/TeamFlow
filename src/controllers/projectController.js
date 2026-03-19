@@ -1,6 +1,6 @@
 import { prisma } from "../config/database.js";
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
 
 export const createProject = catchAsync(async (req, res, next) => {
     const { name, description } = req.body;

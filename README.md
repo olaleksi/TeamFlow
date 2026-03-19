@@ -202,7 +202,7 @@ teamflow-backend/
 │   │   ├── emailService.js  # Email functionality
 │   │   └── activityLoggerServices.js # Activity logging
 │   ├── utils/
-│   │   ├── AppError.js      # Custom error class
+│   │   ├── appError.js      # Custom error class
 │   │   └── catchAsync.js    # Async error handler
 │   └── app.js                # Main app entry
 │   └── server.js 

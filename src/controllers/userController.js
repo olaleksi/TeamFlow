@@ -1,6 +1,6 @@
 import { prisma } from "../config/database.js";
 import catchAsync from "../utils/catchAsync.js";
-import AppError from "../utils/AppError.js";
+import AppError from "../utils/appError.js";
 
 
 export const getProfile = catchAsync(async (req, res) => {

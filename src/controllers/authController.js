@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { prisma } from "../config/database.js";
 import { sendVerificationEmail, sendTaskAssignmentEmail} from "../services/emailService.js";
-import AppError from "../utils/AppError.js";
 import catchAsync from "../utils/catchAsync.js";
+import AppError from "../utils/appError.js";
 
 // Generate JWT Token
 const signToken = (id) => {
