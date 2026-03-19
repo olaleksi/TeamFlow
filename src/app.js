@@ -52,7 +52,7 @@ app.use('/api/users', userRoutes);
 // Root route to check if the API is running
 app.get('/', (req, res) => { 
     res.redirect("/api-docs");
-    res.status(200).json({status: "OK", message: "TeamFlow API is running 🚀" });
+    // res.status(200).json({status: "OK", message: "TeamFlow API is running 🚀" });
 });
 
 
