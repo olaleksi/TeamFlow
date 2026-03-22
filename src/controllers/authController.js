@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { prisma } from "../config/database.js";
-import { sendVerificationEmail, sendTaskAssignmentEmail} from "../services/emailService.js";
+import { sendVerificationEmail} from "../services/emailService.js";
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
 

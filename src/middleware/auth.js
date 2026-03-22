@@ -79,4 +79,45 @@ const restrictTo = (...roles) => {
   };
 };
 
-export { protect, restrictTo };
+/**
+ * Logic to determine if a requester can access a specific resource.
+ *  requester - The user object from the JWT (id, email, role).
+ * targetId - The userId of the account being accessed.
+    * Returns true if the requester is an ADMIN or if they are accessing their own account.
+ */
+
+const hasAccess = (requester, targetId) => {
+    // Rule: You must be an ADMIN OR the ID must match your own.
+    return requester.role === "ADMIN" || requester.id === targetId;
+}
+
+// Checks if the user is an admin or the owner of the resource (like their own profile)
+const isOwnerOrAdmin = catchAsync(async(req, res, next) => {
+  const userId = req.user.id;
+  // Check if user still exists
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      email: true,
+      firstName: true,
+      lastName: true,
+      role: true,
+      isVerified: true,
+      },
+    });
+
+    // Always check if user exists before accessing its properties to avoid crashes
+    if (!user) {
+      return next(new AppError("Authentication required!", 401));
+    }
+  // check if the requester has access to this resource
+  if (hasAccess(req.user, userId)) {
+    return next(); // Permission granted, move to controller
+  }
+
+  // Permission denied
+  return next(new AppError("Access denied. You do not have permission to manage this account.", 403));
+});
+
+export { protect, restrictTo, isOwnerOrAdmin };
